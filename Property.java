@@ -5,9 +5,9 @@ public class Property {
     private boolean isAvailable;
 
     public Property(int propertyID, String description, double rentalRate) {
-        if (rentalRate <= 0) {
-            throw new IllegalArgumentException("Rental rate must be greater than zero.");
-        }
+        validatePropertyID(propertyID);
+        validateDescription(description);
+        validateRentalRate(rentalRate);
         this.propertyID = propertyID;
         this.description = description;
         this.rentalRate = rentalRate;
@@ -35,13 +35,27 @@ public class Property {
     }
 
     public void updateDescription(String description) {
+        validateDescription(description);
         this.description = description;
     }
 
     public void updateRentalRate(double rentalRate) {
-        if (rentalRate <= 0) {
-            throw new IllegalArgumentException("Rental rate must be greater than zero.");
-        }
+        validateRentalRate(rentalRate);
         this.rentalRate = rentalRate;
+    }
+    private void validatePropertyID(int propertyID) {
+        if (propertyID <= 0) {
+            throw new IllegalArgumentException("PropertyID must be a positive integer.");
+        }
+    }
+    private void validateDescription(String description) {
+        if (description == null || description.trim().isEmpty()) {
+            throw new IllegalArgumentException("Description cannot be null or empty.");
+        }
+    }
+    private void validateRentalRate(double rentalRate) {
+        if (Double.isNaN(rentalRate) || Double.isInfinite(rentalRate) || rentalRate <= 0) {
+            throw new IllegalArgumentException("Rental rate must be a finite, positive decimal number.");
+        }
     }
 }
