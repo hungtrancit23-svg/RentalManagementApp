@@ -11,6 +11,9 @@ public class RentalContract {
 
     public RentalContract(Integer contractID, Property property, Tenant tenant, LocalDate startDate,
             LocalDate endDate) {
+        if (contractID == null || contractID <= 0) {
+            throw new IllegalArgumentException("ContractID must be a positive integer");
+        }
         if (property == null || !property.isAvailable()) {
             throw new IllegalArgumentException("Property is not available");
         }
