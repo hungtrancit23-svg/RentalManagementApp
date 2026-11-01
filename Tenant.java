@@ -16,7 +16,7 @@ public class Tenant extends User {
             this.rentalContracts.add(contract);
             return contract;
         } catch (IllegalArgumentException e) {
-            System.err.println("Failed to rent property: " + e.getMessage());
+            System.out.println("RentProperty failed: " + e.getMessage() + ". No contract was appended.");
             return null;
         }
     }
