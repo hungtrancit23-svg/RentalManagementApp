@@ -1,47 +1,26 @@
-import java.time.LocalDate;
-
 public class Main {
     public static void main(String[] args) {
-        PropertyOwner owner = new PropertyOwner(
-            1, "Anna", "Nguyen", "anna@example.com"
-        );
-        
-        Tenant tenant = new Tenant(
-            2, "Minh", "Tran", "minh@example.com"
-        );
+        System.out.println("=== TEST USER VALIDATION ===");
 
-        Property property = owner.createProperty(
-            101, "Apartment A101, two bedrooms", 5000
-        );
+        try {
+            User validUser = new User(2, "Anna", "Nguyen", "anna@example.com");
+            System.out.println("PASSED: Create valid user successfully -> " + validUser.getFullName());
+        } catch (Exception e) {
+            System.out.println("FAILED: " + e.getMessage());
+        }
 
-        RentalContract contract = tenant.rentProperty(
-            1001, 
-            property, 
-            LocalDate.of(2026, 11, 1), 
-            LocalDate.of(2027, 10, 31)
-        );
-        
-        System.out.println("owner.getFullName(): " + owner.getFullName());
-        
-        System.out.println("Number of owner.getProperties(): " + owner.getProperties().size());
-        
-        System.out.println("Number of tenant.getRentalContracts(): " + tenant.getRentalContracts().size());
-        
-        System.out.println("property.isAvailable(): " + property.isAvailable());
-        
-        System.out.println("contract.isActive(): " + contract.isActive());
-        
-        System.out.println("contract.getRentAmount(): " + contract.getRentAmount());
+        try {
+            User invalidUser = new User(-1, "Anna", "Nguyen", "anna@example.com");
+            System.out.println("FAILED: Allowed negative UserID!");
+        } catch (IllegalArgumentException e) {
+            System.out.println("PASSED: Blocked negative UserID -> " + e.getMessage());
+        }
 
-        property.updateRentalRate(5500);
-        
-        System.out.println("property.getRentalRate(): " + property.getRentalRate());
-        System.out.println("contract.getRentAmount(): " + contract.getRentAmount());
-
-        contract.terminate();
-        
-        System.out.println("contract.isActive(): " + contract.isActive());
-        System.out.println("property.isAvailable(): " + property.isAvailable());
-        System.out.println("The contract is still on the Tenant's list: " + tenant.getRentalContracts().size());
+        try {
+            User invalidEmailUser = new User(3, "Anna", "Nguyen", "anna@@example.com");
+            System.out.println("FAILED: Allowed invalid email!");
+        } catch (IllegalArgumentException e) {
+            System.out.println("PASSED: Blocked invalid email -> " + e.getMessage());
+        }
     }
 }
