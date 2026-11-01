@@ -5,57 +5,48 @@ public class Property {
     private boolean isAvailable;
 
     public Property(int propertyID, String description, double rentalRate) {
-        validatePropertyID(propertyID);
-        validateDescription(description);
-        validateRentalRate(rentalRate);
+        if (!validatePropertyID(propertyID) || !validateDescription(description) || !validateRentalRate(rentalRate)) {
+            throw new IllegalArgumentException("Invalid input data for Property creation.");
+        }
         this.propertyID = propertyID;
-        this.description = description;
+        this.description = description.trim();
         this.rentalRate = rentalRate;
-        this.isAvailable = true;
-    }
-
-    public int getPropertyID() {
-        return propertyID;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public double getRentalRate() {
-        return rentalRate;
-    }
-
-    public boolean isAvailable() {
-        return isAvailable;
-    }
-
-    public void setAvailable(boolean available) {
-        this.isAvailable = available;
+        this.isAvailable = true; 
     }
 
     public void updateDescription(String description) {
-        validateDescription(description);
-        this.description = description;
+        if (!validateDescription(description)) {
+            System.out.println("Update failed: Invalid description.");
+            return;
+        }
+        this.description = description.trim();
     }
 
-    public void updateRentalRate(double rentalRate) {
-        validateRentalRate(rentalRate);
-        this.rentalRate = rentalRate;
-    }
-    private void validatePropertyID(int propertyID) {
-        if (propertyID <= 0) {
-            throw new IllegalArgumentException("PropertyID must be a positive integer.");
+    public boolean updateRentalRate(double newRate) {
+        if (!validateRentalRate(newRate)) {
+            System.out.println("Update failed: Invalid rental rate. Rate remains unchanged.");
+            return false;
         }
+        this.rentalRate = newRate;
+        return true;
     }
-    private void validateDescription(String description) {
-        if (description == null || description.trim().isEmpty()) {
-            throw new IllegalArgumentException("Description cannot be null or empty.");
-        }
+
+    public static boolean validatePropertyID(int id) {
+        return id > 0;
     }
-    private void validateRentalRate(double rentalRate) {
-        if (Double.isNaN(rentalRate) || Double.isInfinite(rentalRate) || rentalRate <= 0) {
-            throw new IllegalArgumentException("Rental rate must be a finite, positive decimal number.");
-        }
+
+    public static boolean validateDescription(String desc) {
+        return desc != null && !desc.trim().isEmpty();
     }
+
+    public static boolean validateRentalRate(Double rate) {
+        if (rate == null) return false;
+        return Double.isFinite(rate) && rate > 0;
+    }
+
+    public int getPropertyID() { return propertyID; }
+    public String getDescription() { return description; }
+    public double getRentalRate() { return rentalRate; }
+    public boolean isAvailable() { return isAvailable; }
+    public void setAvailable(boolean available) { isAvailable = available; }
 }
