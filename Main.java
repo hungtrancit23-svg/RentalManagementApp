@@ -1,34 +1,21 @@
 public class Main {
     public static void main(String[] args) {
-        System.out.println("=== TEST PROPERTY VALIDATION ===");
+        System.out.println("=== TEST PROPERTYOWNER VALIDATION ===");
 
-        try {
-            Property prop = new Property(101, "Apartment A101", 5000.50);
-            System.out.println("PASSED: Property created successfully -> " + prop.getDescription());
-        } catch (Exception e) {
-            System.out.println("FAILED: " + e.getMessage());
-        }
+        PropertyOwner owner = new PropertyOwner(1, "Anna", "Nguyen", "anna@example.com");
 
-        try {
-            Property invalidProp = new Property(102, "Apartment B", -50.0);
-            System.out.println("FAILED: Allowed negative rental rate!");
-        } catch (IllegalArgumentException e) {
-            System.out.println("PASSED: Blocked negative rate -> " + e.getMessage());
-        }
-
-        try {
-            Property invalidDesc = new Property(103, "   ", 3000.0);
-            System.out.println("FAILED: Allowed empty description!");
-        } catch (IllegalArgumentException e) {
-            System.out.println("PASSED: Blocked empty description -> " + e.getMessage());
-        }
-
-        Property prop = new Property(104, "Penthouse", 10000.0);
-        boolean updateResult = prop.updateRentalRate(-200.0);
-        if (!updateResult && prop.getRentalRate() == 10000.0) {
-            System.out.println("PASSED: Failed update preserved old rate (10000.0)");
+        Property p1 = owner.createProperty(101, "Apartment A101", 5000.0);
+        if (p1 != null && owner.getProperties().size() == 1) {
+            System.out.println("PASSED: Valid property created and appended. Total properties: " + owner.getProperties().size());
         } else {
-            System.out.println("FAILED: Old rate was changed on invalid update!");
+            System.out.println("FAILED: Valid property was not added.");
+        }
+
+        Property p2 = owner.createProperty(102, "Apartment B102", 0.0);
+        if (p2 == null && owner.getProperties().size() == 1) {
+            System.out.println("PASSED: Invalid property blocked. List size remains unchanged: " + owner.getProperties().size());
+        } else {
+            System.out.println("FAILED: Invalid property was appended to the list!");
         }
     }
 }
