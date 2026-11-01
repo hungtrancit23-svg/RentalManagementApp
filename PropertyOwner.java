@@ -10,9 +10,14 @@ public class PropertyOwner extends User {
     }
 
     public Property createProperty(int propertyID, String description, double rentalRate) {
-            Property property = new Property(propertyID, description, rentalRate);
-            this.ownedProperties.add(property);
-            return property;
+        try {
+            Property newProperty = new Property(propertyID, description, rentalRate);
+            this.ownedProperties.add(newProperty);
+            return newProperty;
+        } catch (IllegalArgumentException e) {
+            System.out.println("CreateProperty failed: " + e.getMessage() + " No property was appended.");
+            return null;
+        }
     }
 
     public List<Property> getProperties() {
