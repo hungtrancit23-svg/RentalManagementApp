@@ -48,7 +48,6 @@ public class User {
         return Pattern.matches(EMAIL_REGEX, email.trim());
     }
 
-    // Getters
     public int getUserID() { return userID; }
     public String getFirstName() { return firstName; }
     public String getLastName() { return lastName; }
