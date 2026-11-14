@@ -1,3 +1,4 @@
+package model;
 import java.time.LocalDate;
 
 public class RentalContract {
@@ -41,4 +42,12 @@ public class RentalContract {
     public LocalDate getEndDate() { return endDate; }
     public double getRentAmount() { return rentAmount; }
     public boolean isActive() { return isActive; }
+	
+	public void terminate() {
+        if (!this.isActive) {
+            return;
+        }
+        this.isActive = false;
+        this.property.setAvailable(true);
+    }
 }
